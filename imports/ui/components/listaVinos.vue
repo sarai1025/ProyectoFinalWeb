@@ -1,0 +1,132 @@
+<template>
+  <div
+    style="background-image: url('https://images.unsplash.com/photo-1458682625221-3a45f8a844c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80'); widht:100%; height: 100%;  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;"
+  >
+    <v-container>
+      <v-row class="pb-4">
+        <v-col>
+          <menuBar />
+        </v-col>
+      </v-row>
+
+      <v-alert v-if="eliminado === true" type="success">Se eliminó el Vino.</v-alert>
+      <v-card max-width="800" class="mx-auto">
+        <v-list subheader three-line="true" :nav="true">
+          <v-row>
+            <v-col md="9" sm="12">
+              <v-subheader v-if="comidaSeleccionada">Los vinos para acompañar {{ comidaSeleccionada }} son: </v-subheader>
+              <v-subheader v-else>Tienda</v-subheader>
+            </v-col>
+            <v-col class="mt-3 pr-5 pl-11" md="3" sm="12">
+              <v-btn @click.stop="dialog = {open:true}" v-if="loggedUser.rol==='admin'" outlined depressed style="width:120px; height:25px" color="green">
+                <i class="fas fa-plus mr-2"></i>  Agregar
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <v-list-item  v-for="item in this.items" :key="item.nombre">
+
+            <v-list-item-content>
+              <v-row>
+                <v-col md="1">
+                  <v-list-item-avatar size="75">
+                    <v-img :src="item.imagen"></v-img>
+                  </v-list-item-avatar>
+                </v-col>
+
+                <v-col md="9" class="pl-10 pr-10">
+                  <v-row class="mb-3">
+                    <v-list-item-title class="subtitle-1 font-weight-bold" v-text="item.nombre"></v-list-item-title>
+                  </v-row>
+
+                  <v-row>
+                    <p class="font-weight-light body-2" color="grey" v-text="item.descripcion"></p>
+                  </v-row>
+                </v-col>
+
+                <v-col :align-self="'end'" md="2" class="mr-0 pr-0 ml-0 pl-0 pt-35 mt-1">
+                  <v-row v-if="loggedUser.rol==='admin'" class="mb-0 mr-0 pr-0 ml-0 pl-0 mt-0 pt-0">
+                    <v-list-item-action class="ma-0 pa-0">
+                      <v-row class="mb-0 pb-0">
+                        <v-col class="mr-0 pr-0 ml-0 pl-0">
+                          <v-btn outlined depressed small color="blue darken-4" @click.stop="dialog = {open:true}">
+                            <i class="fas fa-pencil-alt"></i>
+                          </v-btn>
+                        </v-col>
+                        <v-col class="ml-0 pl-2 mr-0 pr-0">
+                          <v-btn outlined depressed small color="red">
+                            <i class="fas fa-trash-alt"></i>
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-list-item-action>
+                  </v-row>
+
+                  <v-row class="mr-0 mt-0 pt-0">
+                    <v-btn to="/Detalle">Ver más...</v-btn>
+                  </v-row>
+
+                </v-col>
+                
+              </v-row>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+        <br />
+        <v-divider></v-divider>
+      </v-card>
+      <agregarEditarVinos :openDialog="dialog"></agregarEditarVinos>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import Menu from "../components/menu";
+import Modal from "../components/modalAgregarEditarVino";
+
+export default {
+  components: {
+    menuBar: Menu,
+    agregarEditarVinos: Modal
+  },
+  data: function() {
+    return {
+      items: [
+        {
+          nombre: "Vino blanco Lazarillo airem",
+          descripcion:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+          imagen:
+            "https://www.tiendayuntero.com/wp-content/uploads/2016/10/lazarillo-blanco-yuntero-1.png",
+          precio: "$25.000"
+        },
+        {
+          nombre: "Vino espumoso Orlandi Sagvinon",
+          descripcion:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.",
+          imagen:
+            "https://cdn.shopify.com/s/files/1/2978/0812/products/Orlandi.sauvignonblanc_2048x.png?v=1559161150",
+          precio: "$43.000"
+        },
+        {
+          nombre: "Vino espumoso Santiago Ruiz",
+          descripcion:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.",
+          imagen:
+            "https://lataberna.com.ec/cuenca/estadio/5643-large_default/santiago-ruiz-vino-blanco-750-ml.jpg",
+          precio: "$73.000"
+        }
+      ],
+      eliminado: false,
+      loggedUser:{nombre:"sarai", rol: "admin"},
+      comidaSeleccionada:undefined, //TO-DO GESTIONAR CON EL STORE DE VUEX
+      dialog: {open:false},
+    };
+  }
+};
+</script>
+
+<style>
+</style>
