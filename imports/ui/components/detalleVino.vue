@@ -121,8 +121,8 @@ export default {
           "https://images.unsplash.com/photo-1555025056-759b7153b4ea?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
           "https://images.unsplash.com/photo-1517620034968-c04439d3618f?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
         ],
+        cantidad: "15",
         precio: "$25.000",
-        cantidad: "15"
       },
       dialog: false
     };

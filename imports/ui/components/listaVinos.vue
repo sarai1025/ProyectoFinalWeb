@@ -16,18 +16,26 @@
         <v-list subheader three-line="true" :nav="true">
           <v-row>
             <v-col md="9" sm="12">
-              <v-subheader v-if="comidaSeleccionada">Los vinos para acompañar {{ comidaSeleccionada }} son: </v-subheader>
+              <v-subheader
+                v-if="comidaSeleccionada"
+              >Los vinos para acompañar {{ comidaSeleccionada }} son:</v-subheader>
               <v-subheader v-else>Tienda</v-subheader>
             </v-col>
             <v-col class="mt-3 pr-5 pl-11" md="3" sm="12">
-              <v-btn @click.stop="dialog = {open:true}" v-if="loggedUser.rol==='admin'" outlined depressed style="width:120px; height:25px" color="green">
-                <i class="fas fa-plus mr-2"></i>  Agregar
+              <v-btn
+                @click.stop="dialog = {open:true}"
+                v-if="loggedUser.rol==='admin'"
+                outlined
+                depressed
+                style="width:120px; height:25px"
+                color="green"
+              >
+                <i class="fas fa-plus mr-2"></i> Agregar
               </v-btn>
             </v-col>
           </v-row>
           <v-divider></v-divider>
-          <v-list-item  v-for="item in this.items" :key="item.nombre">
-
+          <v-list-item v-for="item in this.items" :key="item.nombre">
             <v-list-item-content>
               <v-row>
                 <v-col md="1">
@@ -51,7 +59,13 @@
                     <v-list-item-action class="ma-0 pa-0">
                       <v-row class="mb-0 pb-0">
                         <v-col class="mr-0 pr-0 ml-0 pl-0">
-                          <v-btn outlined depressed small color="blue darken-4" @click.stop="dialog = {open:true}">
+                          <v-btn
+                            outlined
+                            depressed
+                            small
+                            color="blue darken-4"
+                            @click.stop="dialog = {open:true}"
+                          >
                             <i class="fas fa-pencil-alt"></i>
                           </v-btn>
                         </v-col>
@@ -67,9 +81,7 @@
                   <v-row class="mr-0 mt-0 pt-0">
                     <v-btn to="/Detalle">Ver más...</v-btn>
                   </v-row>
-
                 </v-col>
-                
               </v-row>
             </v-list-item-content>
           </v-list-item>
@@ -100,6 +112,12 @@ export default {
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
           imagen:
             "https://www.tiendayuntero.com/wp-content/uploads/2016/10/lazarillo-blanco-yuntero-1.png",
+          galeria: [
+            "https://images.unsplash.com/photo-1530923629990-438735a7aa50?ixlib=rb-1.2.1&auto=format&fit=crop&w=325&q=80",
+            "https://images.unsplash.com/photo-1555025056-759b7153b4ea?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
+            "https://images.unsplash.com/photo-1517620034968-c04439d3618f?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
+          ],
+          cantidad: "15",
           precio: "$25.000"
         },
         {
@@ -108,6 +126,12 @@ export default {
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.",
           imagen:
             "https://cdn.shopify.com/s/files/1/2978/0812/products/Orlandi.sauvignonblanc_2048x.png?v=1559161150",
+          galeria: [
+            "https://images.unsplash.com/photo-1530923629990-438735a7aa50?ixlib=rb-1.2.1&auto=format&fit=crop&w=325&q=80",
+            "https://images.unsplash.com/photo-1555025056-759b7153b4ea?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
+            "https://images.unsplash.com/photo-1517620034968-c04439d3618f?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
+          ],
+          cantidad: "15",
           precio: "$43.000"
         },
         {
@@ -116,13 +140,19 @@ export default {
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.",
           imagen:
             "https://lataberna.com.ec/cuenca/estadio/5643-large_default/santiago-ruiz-vino-blanco-750-ml.jpg",
+          galeria: [
+            "https://images.unsplash.com/photo-1530923629990-438735a7aa50?ixlib=rb-1.2.1&auto=format&fit=crop&w=325&q=80",
+            "https://images.unsplash.com/photo-1555025056-759b7153b4ea?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
+            "https://images.unsplash.com/photo-1517620034968-c04439d3618f?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
+          ],
+          cantidad: "15",
           precio: "$73.000"
         }
       ],
       eliminado: false,
-      loggedUser:{nombre:"sarai", rol: "admin"},
-      comidaSeleccionada:undefined, //TO-DO GESTIONAR CON EL STORE DE VUEX
-      dialog: {open:false},
+      loggedUser: { nombre: "sarai", rol: "admin" },
+      comidaSeleccionada: undefined, //TO-DO GESTIONAR CON EL STORE DE VUEX
+      dialog: { open: false }
     };
   }
 };
