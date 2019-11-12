@@ -45,13 +45,13 @@
              <v-text-field label="Enlace del icono del vino"></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field label="Enlace foto número 1" ></v-text-field>
+              <v-text-field label="Enlace foto 1" ></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field label="Enlace foto número 2"></v-text-field>
+              <v-text-field label="Enlace foto 2"></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field label="Enlace foto número 3"></v-text-field>
+              <v-text-field label="Enlace foto 3"></v-text-field>
             </v-col>
           </v-row>
         </v-container>
