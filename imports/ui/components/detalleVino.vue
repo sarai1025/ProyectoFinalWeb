@@ -102,7 +102,7 @@ export default {
   components: {
     menuBar: Menu
   },
-   directives: {
+  directives: {
       mask,
     },
   data: function() {

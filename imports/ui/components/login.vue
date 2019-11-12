@@ -43,7 +43,7 @@
 
             <v-card-actions>
               <v-btn v-on:click="loginEvent" text>Iniciar sesión</v-btn>
-              <v-btn to="/register" text>Registrarse</v-btn>
+              <v-btn to="/Registrarse" text>Registrarse</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
