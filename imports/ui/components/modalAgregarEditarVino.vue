@@ -1,77 +1,119 @@
 <template>
   <v-dialog v-model="dialog.open" persistent max-width="600px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">User Profile</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal first name*" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Password*" type="password" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog.open = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog.open = false">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <v-card>
+      <v-card-title>
+        <span class="headline">Vino</span>
+      </v-card-title>
+      <v-card-text>
+        <v-container>
+          <v-row>
+            <v-col md="12">
+              <v-text-field label="Nombre*" required></v-text-field>
+            </v-col>
+            <v-col md="8">
+              <v-text-field label="Precio*" v-mask="'###.###.###.###.###'" required></v-text-field>
+            </v-col>
+            <v-col md="4">
+              <v-text-field label="Cantidad" required type="number" min="1"></v-text-field>
+            </v-col>
+            <v-col md="12">
+              <v-textarea label="Descripción"></v-textarea>
+            </v-col>
+            <v-col md="6">
+              <v-autocomplete
+                dense
+                filled
+                background-color="white"
+                v-model="tipocomida"
+                @change="limpiarComida"
+                label="Tipo de comida"
+                :items="tiposcomidas"
+              ></v-autocomplete>
+            </v-col>
+            <v-col md="6">
+              <v-autocomplete
+                background-color="white"
+                dense
+                filled
+                v-model="comida"
+                label="Comida"
+                :items="comidaSeleccionada"
+                :disabled="habilitarComida"
+              ></v-autocomplete>
+            </v-col>
+            <v-col md="12">
+             <v-text-field label="Enlace del icono del vino"></v-text-field>
+            </v-col>
+            <v-col md="4">
+              <v-text-field label="Enlace foto número 1" ></v-text-field>
+            </v-col>
+            <v-col md="4">
+              <v-text-field label="Enlace foto número 2"></v-text-field>
+            </v-col>
+            <v-col md="4">
+              <v-text-field label="Enlace foto número 3"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+        <small>*Campos obligatorios</small>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="dialog.open = false">Cancelar</v-btn>
+        <v-btn color="blue darken-1" text @click="dialog.open = false">Guardar</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
+import { mask } from 'vue-the-mask'
 export default {
-data () {
-      return {
-        dialog: {open:false},
+  data() {
+    return {
+      dialog: { open: false },
+      tiposcomidas: ["Autocompletes", "Comboboxes", "Forms"],
+      comidas: {
+        Autocompletes: ["Autocompletes", "Comboboxes", "Forms"],
+        Comboboxes: ["Sopa", "Pasta"]
+      },
+      tipocomida: undefined,
+      comida: undefined,
+      errorBusqueda: false
+    };
+  },
+  props: ["openDialog"],
+  watch: {
+    openDialog(newVal) {
+      this.dialog = newVal;
+    }
+  },
+  directives: {
+      mask,
+    },
+  methods: {
+    buscar() {
+      if (!this.tipocomida || !this.comida) {
+        this.errorBusqueda = true;
+        setTimeout(() => {
+          this.errorBusqueda = false;
+        }, 4000);
       }
     },
-    props:[
-        'openDialog'
-    ],
-    watch:{
-        openDialog (newVal) {
-            this.dialog=newVal
-        }
+    limpiarComida() {
+      this.comida = undefined;
     }
-}
+  },
+  computed: {
+    habilitarComida() {
+      return this.tipocomida ? false : true;
+    },
+    comidaSeleccionada() {
+      return this.tipocomida ? this.comidas[this.tipocomida] : [];
+    }
+  }
+};
 </script>
 
 <style>
-
 </style>
