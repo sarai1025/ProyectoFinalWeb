@@ -32,6 +32,7 @@
       <v-btn to="/Tienda" v-if="loggedUser.rol!=='admin'" text>Tienda</v-btn>
       <v-btn to="/Tienda" v-if="loggedUser.rol==='admin'" text>Modificar vinos</v-btn>
       <v-btn to="/ListaComidas" v-if="loggedUser.rol==='admin'" text>Modificar comidas</v-btn>
+      <v-btn to="/Reportes" v-if="loggedUser.rol==='admin'" text>Reportes</v-btn>
       <v-btn to="/login" text>Iniciar sesión</v-btn>
     </v-app-bar>
 </template>

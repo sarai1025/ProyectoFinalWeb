@@ -6,6 +6,8 @@ import Tienda from '../components/listaVinos'
 import Detalle from '../components/detalleVino'
 import Registro from '../components/registro'
 import listadoComidas from '../components/listadocomidas'
+import Reportes from '../components/reportes'
+
 
 
 Vue.use(Router)
@@ -17,7 +19,7 @@ const router=new Router({
         {path:'/Tienda', component:Tienda},
         {path:'/Detalle', component:Detalle},
         {path:'/Registrarse', component:Registro},
-        {path:'/ListaComidas', component:listadoComidas},
+        {path:'/Reportes', component:Reportes},
 
 
     ]
