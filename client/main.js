@@ -4,6 +4,9 @@ import App from '../imports/ui/App'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 import router from  '../imports/ui/router'
+
+import store from '../imports/ui/store'
+
 Vue.use(Vuetify)
 
 const opts={}
@@ -19,6 +22,7 @@ Meteor.startup(()=> {
     el: "#app",
     vuetify,
     router,
+    store,
     ...App
   })
 })
