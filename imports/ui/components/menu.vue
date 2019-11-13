@@ -29,7 +29,9 @@
 
       </div>
       <v-btn to="/" text>Inicio</v-btn>
-      <v-btn to="/Tienda" text>Tienda</v-btn>
+      <v-btn to="/Tienda" v-if="loggedUser.rol!=='admin'" text>Tienda</v-btn>
+      <v-btn to="/Tienda" v-if="loggedUser.rol==='admin'" text>Modificar vinos</v-btn>
+      <v-btn to="/ListaComidas" v-if="loggedUser.rol==='admin'" text>Modificar comidas</v-btn>
       <v-btn to="/login" text>Iniciar sesión</v-btn>
     </v-app-bar>
 </template>
@@ -43,6 +45,7 @@ export default {
   },
     data: () => ({ 
       nn: true,
+      loggedUser: { nombre: "sarai", rol: "admin" },
   })
   ,
 };
