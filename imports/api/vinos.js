@@ -10,7 +10,7 @@ if (Meteor.isServer) {
 }
 Meteor.methods({
     'vinos.add'(vino) {
-        vinosCollection.insert({
+        VinosCollection.insert({
             ...vino,
             date: new Date()
         })

@@ -42,10 +42,10 @@
               ></v-autocomplete>
             </v-col>
             <v-col md="12">
-             <v-text-field label="Enlace del icono del vino"></v-text-field>
+              <v-text-field label="Enlace del icono del vino"></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field label="Enlace foto 1" ></v-text-field>
+              <v-text-field label="Enlace foto 1"></v-text-field>
             </v-col>
             <v-col md="4">
               <v-text-field label="Enlace foto 2"></v-text-field>
@@ -60,14 +60,17 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="dialog.open = false">Cancelar</v-btn>
-        <v-btn color="blue darken-1" text @click="dialog.open = false">Guardar</v-btn>
+        <v-btn color="blue darken-1" text @click="addVino()">Guardar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mask } from 'vue-the-mask'
+import {VinosCollection} from "../../api/vinos";
+import Faker from 'faker'
+
+import { mask } from "vue-the-mask";
 export default {
   data() {
     return {
@@ -89,8 +92,8 @@ export default {
     }
   },
   directives: {
-      mask,
-    },
+    mask
+  },
   methods: {
     buscar() {
       if (!this.tipocomida || !this.comida) {
@@ -102,7 +105,16 @@ export default {
     },
     limpiarComida() {
       this.comida = undefined;
+    },
+    addVino(){
+      dialog.open = false
+      let vino ={
+        nombre:  Faker.name.findName(),
+        
+      }
+      Meteor.call('vinos.add', vino)
     }
+  
   },
   computed: {
     habilitarComida() {

@@ -95,6 +95,7 @@
 </template>
 
 <script>
+import Faker from 'faker'
 import Menu from "../components/menu";
 import Modal from "../components/modalAgregarEditarVino";
 import {VinosCollection} from "../../api/vinos";
@@ -119,6 +120,15 @@ export default {
     },
     vinos() {
       return  VinosCollection.find({});
+    }
+  },
+  methods:{
+    addVino(){
+      let vino ={
+        nombre:  Faker.name.findName(),
+        
+      }
+      Meteor.call('vino.add', vino)
     }
   }
 };
