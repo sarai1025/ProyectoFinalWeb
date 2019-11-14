@@ -35,7 +35,7 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
-          <v-list-item v-for="item in this.items" :key="item.nombre">
+          <v-list-item v-for="item in vinos" :key="item.nombre">
             <v-list-item-content>
               <v-row>
                 <v-col md="1">
@@ -97,6 +97,7 @@
 <script>
 import Menu from "../components/menu";
 import Modal from "../components/modalAgregarEditarVino";
+import {VinosCollection} from "../../api/vinos";
 
 export default {
   components: {
@@ -105,55 +106,20 @@ export default {
   },
   data: function() {
     return {
-      items: [
-        {
-          nombre: "Vino blanco Lazarillo airem",
-          descripcion:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          imagen:
-            "https://www.tiendayuntero.com/wp-content/uploads/2016/10/lazarillo-blanco-yuntero-1.png",
-          galeria: [
-            "https://images.unsplash.com/photo-1530923629990-438735a7aa50?ixlib=rb-1.2.1&auto=format&fit=crop&w=325&q=80",
-            "https://images.unsplash.com/photo-1555025056-759b7153b4ea?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
-            "https://images.unsplash.com/photo-1517620034968-c04439d3618f?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
-          ],
-          cantidad: "15",
-          precio: "$25.000"
-        },
-        {
-          nombre: "Vino espumoso Orlandi Sagvinon",
-          descripcion:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.",
-          imagen:
-            "https://cdn.shopify.com/s/files/1/2978/0812/products/Orlandi.sauvignonblanc_2048x.png?v=1559161150",
-          galeria: [
-            "https://images.unsplash.com/photo-1530923629990-438735a7aa50?ixlib=rb-1.2.1&auto=format&fit=crop&w=325&q=80",
-            "https://images.unsplash.com/photo-1555025056-759b7153b4ea?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
-            "https://images.unsplash.com/photo-1517620034968-c04439d3618f?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
-          ],
-          cantidad: "15",
-          precio: "$43.000"
-        },
-        {
-          nombre: "Vino espumoso Santiago Ruiz",
-          descripcion:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.",
-          imagen:
-            "https://lataberna.com.ec/cuenca/estadio/5643-large_default/santiago-ruiz-vino-blanco-750-ml.jpg",
-          galeria: [
-            "https://images.unsplash.com/photo-1530923629990-438735a7aa50?ixlib=rb-1.2.1&auto=format&fit=crop&w=325&q=80",
-            "https://images.unsplash.com/photo-1555025056-759b7153b4ea?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
-            "https://images.unsplash.com/photo-1517620034968-c04439d3618f?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
-          ],
-          cantidad: "15",
-          precio: "$73.000"
-        }
-      ],
       eliminado: false,
       loggedUser: { nombre: "sarai", rol: "admin" },
       comidaSeleccionada: undefined, //TO-DO GESTIONAR CON EL STORE DE VUEX
-      dialog: { open: false }
+      dialog: { open: false },
+      
     };
+  },
+  meteor: {
+    $subscribe: {
+      'vinos': []
+    },
+    vinos() {
+      return  VinosCollection.find({});
+    }
   }
 };
 </script>
