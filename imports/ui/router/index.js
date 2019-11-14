@@ -20,6 +20,7 @@ const router=new Router({
         {path:'/Detalle', component:Detalle},
         {path:'/Registrarse', component:Registro},
         {path:'/Reportes', component:Reportes},
+        {path:'/ListaComidas', component:listadoComidas},
 
 
     ]
