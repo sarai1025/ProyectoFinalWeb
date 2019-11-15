@@ -8,16 +8,21 @@
         <v-container>
           <v-row>
             <v-col md="12">
-              <v-text-field label="Nombre*" required></v-text-field>
+              <v-text-field v-model="nombre" label="Nombre*" required></v-text-field>
             </v-col>
             <v-col md="8">
-              <v-text-field label="Precio*" v-mask="'###.###.###.###.###'" required></v-text-field>
+              <v-text-field
+                v-model="precio"
+                label="Precio*"
+                v-mask="'###.###.###.###.###'"
+                required
+              ></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field label="Cantidad" required type="number" min="1"></v-text-field>
+              <v-text-field v-model="cantidad" label="Cantidad" required type="number" min="1"></v-text-field>
             </v-col>
             <v-col md="12">
-              <v-textarea label="Descripción"></v-textarea>
+              <v-textarea v-model="descripcion" label="Descripción"></v-textarea>
             </v-col>
             <v-col md="6">
               <v-autocomplete
@@ -42,16 +47,16 @@
               ></v-autocomplete>
             </v-col>
             <v-col md="12">
-              <v-text-field label="Enlace del icono del vino"></v-text-field>
+              <v-text-field v-model="icono" label="Enlace del icono del vino"></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field label="Enlace foto 1"></v-text-field>
+              <v-text-field v-model="foto1" label="Enlace foto 1"></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field label="Enlace foto 2"></v-text-field>
+              <v-text-field v-model="foto2" label="Enlace foto 2"></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field label="Enlace foto 3"></v-text-field>
+              <v-text-field v-model="foto3" label="Enlace foto 3"></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -67,8 +72,8 @@
 </template>
 
 <script>
-import {VinosCollection} from "../../api/vinos";
-import Faker from 'faker'
+import { VinosCollection } from "../../api/vinos";
+import Faker from "faker";
 
 import { mask } from "vue-the-mask";
 export default {
@@ -80,9 +85,17 @@ export default {
         Autocompletes: ["Autocompletes", "Comboboxes", "Forms"],
         Comboboxes: ["Sopa", "Pasta"]
       },
-      tipocomida: undefined,
-      comida: undefined,
-      errorBusqueda: false
+      errorBusqueda: false,
+      nombre: "",
+      precio: "",
+      cantidad: "",
+      descripcion: "",
+      tipocomida: "",
+      comida: "",
+      icono: "",
+      foto1: "",
+      foto2: "",
+      foto3: ""
     };
   },
   props: ["openDialog"],
@@ -106,15 +119,22 @@ export default {
     limpiarComida() {
       this.comida = undefined;
     },
-    addVino(){
-      dialog.open = false
-      let vino ={
-        nombre:  Faker.name.findName(),
-        
-      }
-      Meteor.call('vinos.add', vino)
+    addVino() {
+      let vino = {
+        nombre: this.nombre,
+        precio: this.precio,
+        cantidad: this.cantidad,
+        descripcion: this.descripcion,
+        tipocomida: this.tipocomida,
+        comida: this.comida,
+        icono: this.icono,
+        foto1: this.foto1,
+        foto2: this.foto2,
+        foto3: this.foto3
+      };
+      Meteor.call("vinos.add", vino);
+      this.dialog.open = false;
     }
-  
   },
   computed: {
     habilitarComida() {
