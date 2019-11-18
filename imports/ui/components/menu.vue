@@ -10,7 +10,7 @@
 
       <v-spacer></v-spacer>
 
-      <div v-if="this.nn=false">
+      <div v-if="this.nn=true">
        <v-menu :close-on-content-click="close" offset-y>
          <template v-slot:activator="{ on }">
             <v-btn color="primary" dark v-on="on" x-large icon>
