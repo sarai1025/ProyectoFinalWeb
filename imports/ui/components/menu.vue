@@ -46,7 +46,7 @@ export default {
   },
     data: () => ({ 
       nn: true,
-      loggedUser: { nombre: "sarai", rol: "admi" },
+      loggedUser: { nombre: "sarai", rol: "admin" },
   })
   ,
 };

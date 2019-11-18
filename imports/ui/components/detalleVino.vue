@@ -48,7 +48,7 @@
             <v-btn dark to="/tienda">Cancelar</v-btn>
           </v-col>
           <v-col class="pl-0 ml-0">
-            <v-btn dark @click.stop="dialog = true">Comprar</v-btn>
+            <v-btn dark @click.stop="dialog = true">Agregar Carrito</v-btn>
           </v-col>
         </v-row>
       </v-col>

@@ -5,6 +5,8 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 import router from  '../imports/ui/router'
 import vinosCollection from  '../imports/api/vinos'
+import comidasCollection from  '../imports/api/comidas'
+
 
 
 import store from '../imports/ui/store'
