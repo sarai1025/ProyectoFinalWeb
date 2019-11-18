@@ -122,15 +122,6 @@ export default {
       return  VinosCollection.find({});
     }
   },
-  methods:{
-    addVino(){
-      let vino ={
-        nombre:  Faker.name.findName(),
-        
-      }
-      Meteor.call('vino.add', vino)
-    }
-  }
 };
 </script>
 
