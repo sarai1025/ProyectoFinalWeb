@@ -29,6 +29,7 @@
 
       </div>
       <v-btn to="/" text>Inicio</v-btn>
+      <v-btn to="/Pedidos" v-if="loggedUser.rol=='admin'" text>Pedidos</v-btn>
       <v-btn to="/Tienda" v-if="loggedUser.rol!=='admin'" text>Tienda</v-btn>
       <v-btn to="/Tienda" v-if="loggedUser.rol==='admin'" text>Modificar vinos</v-btn>
       <v-btn to="/ListaComidas" v-if="loggedUser.rol==='admin'" text>Modificar comidas</v-btn>
@@ -41,7 +42,7 @@
 export default {
   computed:{
     notifications(){
-      return this.$store.state.notifications;
+      return null;
     }
   },
     data: () => ({ 
