@@ -16,9 +16,10 @@ Meteor.methods({
         })
     },
 
-    'usuarios.find'(dUsario){
+    'usuarios.findOne'(EUsario, PUsuario){
         UsuariosCollection.findOne({
-            ...dUsario
+           ...EUsario,
+           ...PUsuario
         })
     }
 

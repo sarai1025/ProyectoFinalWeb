@@ -42,7 +42,7 @@
             </v-list-item>
 
             <v-card-actions>
-              <v-btn v-on:click="loginEvent" text>Iniciar sesión</v-btn>
+              <v-btn v-on:click="inicioSesion(email, password)" text>Iniciar sesión</v-btn>
               <v-btn to="/Registrarse" text>Registrarse</v-btn>
             </v-card-actions>
           </v-card>
@@ -83,7 +83,18 @@ export default {
   },
 
   methods:{
-    
+    inicioSesion(email,password){
+
+      var user  = Meteor.call('usuarios.findOne', email,password);
+      console.log(user)
+      if(user!=null){
+        var id= this.$route.params.id;
+        this.$router.push({path: '/' + id});
+      }else{
+         console.log("usuario no registrado")
+      }
+     
+    }
   }
   
 };

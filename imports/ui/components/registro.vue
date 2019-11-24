@@ -108,6 +108,7 @@ export default {
   methods: {
     addUser(){
       Meteor.call('usuarios.add', this.usuario);
+      this.$router.push({path: '/login'});
     }
   }
 };

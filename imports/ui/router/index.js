@@ -13,14 +13,22 @@ Vue.use(Router)
 
 const router=new Router({
     routes:[
-        {path:'/', component:Inicio,},
-        {path:'/login', component:Login},
-        {path:'/Tienda', component:Tienda},
-        {path:'/Detalle', component:Detalle},
-        {path:'/Registrarse', component:Registro},
-        {path:'/Reportes', component:Reportes},
-        {path:'/ListaComidas', component:listadoComidas},
-        {path:'/Pedidos', component:Pedidos},
+         //sin id
+         {path:'/', component:Inicio},
+         {path:'/login', component:Login},
+         {path:'/Tienda', component:Tienda},
+         {path:'/Registrarse', component:Registro},
+         {path:'/Detalle', component:Detalle},
+         {path:'/ListaComidas', component:listadoComidas},
+        //con id
+        {path:'/:id', component:Inicio},
+        {path:'/Tienda/:id', component:Tienda},
+        {path:'/Detalle/:id', component:Detalle},
+        {path:'/Reportes/:id', component:Reportes},
+        {path:'/ListaComidas/:id', component:listadoComidas},
+        {path:'/Pedidos/:id', component:Pedidos},
+
+       
 
     ]
 })
