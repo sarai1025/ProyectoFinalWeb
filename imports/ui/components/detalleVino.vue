@@ -18,7 +18,7 @@
             <v-row>
               <img
                 :src="foto"
-                style="align: middle; object-fit: cover; display: block; margin-left: auto; margin-right: auto;"
+                style="align: middle; display: block; margin-left: auto; margin-right: auto;"
               />
             </v-row>
           </v-carousel-item>
