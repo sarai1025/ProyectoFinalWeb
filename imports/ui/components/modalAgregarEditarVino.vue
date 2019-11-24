@@ -14,7 +14,6 @@
               <v-text-field
                 v-model="vino.precio"
                 label="Precio*"
-                v-mask="'###.###.###.###.###'"
                 required
               ></v-text-field>
             </v-col>
@@ -154,7 +153,7 @@ export default {
       };
       this.$parent.limpiarVinos();
     }
-  }
+  },
 };
 </script>
 

@@ -79,7 +79,7 @@
                   </v-row>
 
                   <v-row class="mr-0 mt-0 pt-0">
-                    <v-btn to="/Detalle">Ver más...</v-btn>
+                    <v-btn  v-on:click="verDetalleVino(item)">Ver más...</v-btn>
                   </v-row>
                 </v-col>
               </v-row>
@@ -144,6 +144,10 @@ export default {
         imagen: "",
         fotos:[]
       }
+    },
+    verDetalleVino(vino) {
+      this.$store.commit("setActualVino", vino);
+      this.$router.push("/Detalle");
     }
   }
 };
