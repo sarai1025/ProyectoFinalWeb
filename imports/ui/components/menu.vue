@@ -10,7 +10,7 @@
 
       <v-spacer></v-spacer>
 
-      <div v-if="this.nn=false">
+      <div v-if="this.nn=true">
        <v-menu :close-on-content-click="close" offset-y>
          <template v-slot:activator="{ on }">
             <v-btn color="primary" dark v-on="on" x-large icon>
@@ -29,6 +29,7 @@
 
       </div>
       <v-btn to="/" text>Inicio</v-btn>
+      <v-btn to="/Pedidos" v-if="loggedUser.rol=='admin'" text>Pedidos</v-btn>
       <v-btn to="/Tienda" v-if="loggedUser.rol!=='admin'" text>Tienda</v-btn>
       <v-btn to="/Tienda" v-if="loggedUser.rol==='admin'" text>Modificar vinos</v-btn>
       <v-btn to="/ListaComidas" v-if="loggedUser.rol==='admin'" text>Modificar comidas</v-btn>
@@ -41,7 +42,7 @@
 export default {
   computed:{
     notifications(){
-      return this.$store.state.notifications;
+      return null;
     }
   },
     data: () => ({ 

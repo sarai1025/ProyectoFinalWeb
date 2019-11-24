@@ -8,9 +8,6 @@ import vinosCollection from  '../imports/api/vinos'
 import comidasCollection from  '../imports/api/comidas'
 
 
-
-import store from '../imports/ui/store'
-
 Vue.use(Vuetify)
 
 const opts={}
@@ -26,7 +23,6 @@ Meteor.startup(()=> {
     el: "#app",
     vuetify,
     router,
-    store,
     ...App
   })
 })

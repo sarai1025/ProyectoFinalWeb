@@ -19,24 +19,25 @@
           <v-container>
             <v-row class="ml-6 mr-6">
               <v-col md="6">
-                <v-text-field label="Nombre*" required></v-text-field>
+                <v-text-field label="Nombre*" required v-model="usuario.nombre"></v-text-field>
               </v-col>
               <v-col md="6">
-                <v-text-field label="Apellido*" required></v-text-field>
+                <v-text-field label="Apellido*" required v-model="usuario.apellido"></v-text-field>
               </v-col>
               <v-col md="12">
-                <v-text-field label="Correo*" required></v-text-field>
+                <v-text-field label="Correo*" required v-model="usuario.correo"></v-text-field>
               </v-col>
               <v-col md="6">
-                <v-text-field label="Número Identificacion*" v-mask="'################'" required></v-text-field>
+                <v-text-field label="Número Identificacion*" v-mask="'################'" required v-model="usuario.id"></v-text-field>
               </v-col>
                <v-col md="6">
-                <v-text-field label="Celular" v-mask="'###-###-####'" required></v-text-field>
+                <v-text-field label="Celular" v-mask="'###-###-####'" required v-model="usuario.celular"></v-text-field>
               </v-col>
               <v-col md="6">
                 <v-text-field
                   :append-icon="show3 ? 'visibility' : 'visibility_off'"
                   :type="show3 ? 'text' : 'password'"
+                  v-model="usuario.contrasenia"
                   label="Contraseña*"
                   hint="Mínimo 8 caracteres"
                   value
@@ -49,6 +50,7 @@
                 <v-text-field
                   :append-icon="show4 ? 'visibility' : 'visibility_off'"
                   :type="show4 ? 'text' : 'password'"
+                  v-model="usuario.concontrasenia"
                   name="input-10-2"
                   label="Confirmar contraseña*"
                   hint="Mínimo 8 caracteres"
@@ -59,7 +61,7 @@
                 ></v-text-field>
               </v-col>
               <v-col md="12">
-                <v-checkbox label="Soy despachador"></v-checkbox>
+                <v-checkbox label="Soy despachador" v-model="usuario.esDespachador"></v-checkbox>
               </v-col>
             </v-row>
           </v-container>
@@ -67,8 +69,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="mr-5 mb-5" color="blue darken-1" text>Cancelar</v-btn>
-          <v-btn class="mr-5 mb-5" color="blue darken-1" text>Guardar</v-btn>
+          <v-btn to="/login" class="mr-5 mb-5" color="blue darken-1" text>Cancelar</v-btn>
+          <v-btn class="mr-5 mb-5" color="blue darken-1" @click="addUser()">Registrarse</v-btn>
         </v-card-actions>
       </v-card>
     </v-container>
@@ -89,8 +91,24 @@ export default {
   data: function() {
     return {
       show3: false,
-      show4: false
+      show4: false,
+
+      usuario:{
+        nombre: "",
+        apellido: "",
+        correo: "",
+        id: '',
+        celular: '',
+        contrasenia: "",
+        concontrasenia: "",
+        esDespachador: false,
+      }
     };
+  },
+  methods: {
+    addUser(){
+      Meteor.call('usuarios.add', this.usuario);
+    }
   }
 };
 </script>

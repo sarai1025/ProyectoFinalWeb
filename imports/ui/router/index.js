@@ -7,8 +7,7 @@ import Detalle from '../components/detalleVino'
 import Registro from '../components/registro'
 import listadoComidas from '../components/listadocomidas'
 import Reportes from '../components/reportes'
-
-
+import Pedidos from '../components/pedidos'
 
 Vue.use(Router)
 
@@ -21,7 +20,7 @@ const router=new Router({
         {path:'/Registrarse', component:Registro},
         {path:'/Reportes', component:Reportes},
         {path:'/ListaComidas', component:listadoComidas},
-
+        {path:'/Pedidos', component:Pedidos},
 
     ]
 })
