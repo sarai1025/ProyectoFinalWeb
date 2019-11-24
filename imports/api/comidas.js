@@ -15,20 +15,20 @@ Meteor.methods({
             date: new Date()
         })
     },
-    'comidas.add'(tipoComida, comida){
-        return ComidasCollection.update({_id: tipoComida._id},{$push:{comidas:comida}})
+    'comidas.add'(tipoComida, comida) {
+        return ComidasCollection.update({ _id: tipoComida._id }, { $push: { comidas: comida } })
     },
     'tiposComidas.delete'(tipoComida) {
-        return ComidasCollection.remove({_id: tipoComida._id})
+        return ComidasCollection.remove({ _id: tipoComida._id })
     },
-    'comidas.delete'(tipoComida, comida){
-        return ComidasCollection.update({_id: tipoComida._id},{$pull:{comidas: comida}})
+    'comidas.delete'(tipoComida, comida) {
+        return ComidasCollection.update({ _id: tipoComida._id }, { $pull: { comidas: comida } })
     },
-    'tipoComidas.edit'(tipoComida, nombreNuevo){
-        return ComidasCollection.update({_id: tipoComida._id},{$set:{nombre:nombreNuevo}})
+    'tipoComidas.edit'(tipoComida, nombreNuevo) {
+        return ComidasCollection.update({ _id: tipoComida._id }, { $set: { nombre: nombreNuevo } })
     },
-    'comidas.edit'(tipoComida, comida, indice){
-        return ComidasCollection.update({_id: tipoComida._id}, {$set : {[`comidas.${indice}`]: comida}})
+    'comidas.edit'(tipoComida, comida, indice) {
+        return ComidasCollection.update({ _id: tipoComida._id }, { $set: { [`comidas.${indice}`]: comida } })
     }
 })
 

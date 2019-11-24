@@ -24,15 +24,18 @@
             <v-col md="12">
               <v-textarea v-model="vino.descripcion" label="Descripción"></v-textarea>
             </v-col>
-            <v-col md="12">
+
+            <v-col cols="12">
               <v-autocomplete
-                background-color="white"
-                dense
-                filled
                 v-model="vino.comida"
+                :items="allComidas"
+                dense
+                chips
+                small-chips
                 label="Comida"
                 multiple="true"
-                :items="comidaSeleccionada"
+                background-color="white"
+                filled
               ></v-autocomplete>
             </v-col>
             <v-col md="12">
@@ -72,6 +75,8 @@
 
 <script>
 import { VinosCollection } from "../../api/vinos";
+import { ComidasCollection } from "../../api/comidas";
+
 import Faker from "faker";
 
 import { mask } from "vue-the-mask";
@@ -87,18 +92,28 @@ export default {
         descripcion: "",
         comida: [],
         imagen: "",
-        fotos:[]
+        fotos: []
       }
     };
+  },
+  meteor: {
+    $subscribe: {
+      tipoComidas: []
+    },
+    allComidas() {
+      const comidas =  ComidasCollection.find({}) || {};
+      let tipoComidas =  comidas.map(tipocomida => {return tipocomida.comidas;});
+      tipoComidas =  tipoComidas.flat();
+      console.log(tipoComidas);
+      return tipoComidas;
+    }
   },
   props: ["openDialog", "vinoSeleccionado"],
   watch: {
     openDialog(newVal) {
-      console.log(newVal);
       this.dialog = newVal;
     },
     vinoSeleccionado(newVal) {
-      console.log(newVal);
       this.vino = newVal;
     }
   },
@@ -135,14 +150,9 @@ export default {
         descripcion: "",
         comida: [],
         imagen: "",
-        fotos:[]
+        fotos: []
       };
-      this.$parent.limpiarVinos()
-    }
-  },
-  computed: {
-    comidaSeleccionada() {
-      return this.tipocomida ? this.comidas[this.tipocomida] : [];
+      this.$parent.limpiarVinos();
     }
   }
 };
