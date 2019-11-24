@@ -23,7 +23,7 @@
             </v-col>
             <v-col class="mt-3 pr-5 pl-11" md="3" sm="12">
               <v-btn
-                @click.stop="dialog = {open:true}"
+                @click.stop="limpiarVinos(); dialog={open:true}"
                 v-if="loggedUser.rol==='admin'"
                 outlined
                 depressed
@@ -64,13 +64,13 @@
                             depressed
                             small
                             color="blue darken-4"
-                            @click.stop="dialog = {open:true}"
+                            @click.stop="vinoSeleccionado=item; dialog = {open:true, modoEditar:true}; "
                           >
                             <i class="fas fa-pencil-alt"></i>
                           </v-btn>
                         </v-col>
                         <v-col class="ml-0 pl-2 mr-0 pr-0">
-                          <v-btn outlined depressed small color="red">
+                          <v-btn outlined depressed small  @click.stop="borrarVinos(item)" color="red">
                             <i class="fas fa-trash-alt"></i>
                           </v-btn>
                         </v-col>
@@ -89,7 +89,7 @@
         <br />
         <v-divider></v-divider>
       </v-card>
-      <agregarEditarVinos :openDialog="dialog"></agregarEditarVinos>
+      <agregarEditarVinos :openDialog="dialog" :vinoSeleccionado="vinoSeleccionado"></agregarEditarVinos>
     </v-container>
   </div>
 </template>
@@ -110,8 +110,16 @@ export default {
       eliminado: false,
       loggedUser: { nombre: "sarai", rol: "admin" },
       comidaSeleccionada: undefined, //TO-DO GESTIONAR CON EL STORE DE VUEX
-      dialog: { open: false },
-      
+      dialog: { open: false,},
+      vinoSeleccionado:{
+        nombre: "",
+        precio: "",
+        cantidad: "",
+        descripcion: "",
+        comida: [],
+        imagen: "",
+        fotos: []
+      },     
     };
   },
   meteor: {
@@ -122,6 +130,22 @@ export default {
       return  VinosCollection.find({});
     }
   },
+  methods:{
+    borrarVinos(vino){
+      Meteor.call('vinos.delete', vino)
+    },
+    limpiarVinos(){
+      this.vinoSeleccionado= {
+        nombre: "",
+        precio: "",
+        cantidad: "",
+        descripcion: "",
+        comida: [],
+        imagen: "",
+        fotos:[]
+      }
+    }
+  }
 };
 </script>
 

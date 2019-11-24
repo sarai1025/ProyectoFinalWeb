@@ -27,8 +27,8 @@ Meteor.methods({
     'tipoComidas.edit'(tipoComida, nombreNuevo){
         return ComidasCollection.update({_id: tipoComida._id},{$set:{nombre:nombreNuevo}})
     },
-    'comidas.edit'(tipoComida, comida){
-
+    'comidas.edit'(tipoComida, comida, indice){
+        return ComidasCollection.update({_id: tipoComida._id}, {$set : {[`comidas.${indice}`]: comida}})
     }
 })
 

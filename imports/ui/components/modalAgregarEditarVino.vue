@@ -39,13 +39,13 @@
               <v-text-field v-model="vino.imagen" label="Enlace del icono del vino"></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field v-model="vino.foto1" label="Enlace foto 1"></v-text-field>
+              <v-text-field v-model="vino.fotos[0]" label="Enlace foto 1"></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field v-model="vino.foto2" label="Enlace foto 2"></v-text-field>
+              <v-text-field v-model="vino.fotos[1]" label="Enlace foto 2"></v-text-field>
             </v-col>
             <v-col md="4">
-              <v-text-field v-model="vino.foto3" label="Enlace foto 3"></v-text-field>
+              <v-text-field v-model="vino.fotos[2]" label="Enlace foto 3"></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -53,8 +53,18 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="dialog.open = false">Cancelar</v-btn>
-        <v-btn color="blue darken-1" text @click="addVino()">Guardar</v-btn>
+        <v-btn
+          color="blue darken-1"
+          text
+          @click="dialog.open = false; modoEditar=false; limpiarVinos()"
+        >Cancelar</v-btn>
+        <v-btn
+          color="blue darken-1"
+          text
+          v-if="dialog.modoEditar===true"
+          @click="editarVino(); dialog.modoEditar=false"
+        >Actualizar</v-btn>
+        <v-btn color="blue darken-1" text v-else @click="addVino();">Guardar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -68,14 +78,8 @@ import { mask } from "vue-the-mask";
 export default {
   data() {
     return {
-      dialog: { open: false },
-      tiposcomidas: ["Autocompletes", "Comboboxes", "Forms"],
-      comidas: {
-        Autocompletes: ["Autocompletes", "Comboboxes", "Forms"],
-        Comboboxes: ["Sopa", "Pasta"]
-      },
+      dialog: { open: false, modoEditar: false },
       errorBusqueda: false,
-
       vino: {
         nombre: "",
         precio: "",
@@ -83,16 +87,19 @@ export default {
         descripcion: "",
         comida: [],
         imagen: "",
-        foto1: "",
-        foto2: "",
-        foto3: ""
+        fotos:[]
       }
     };
   },
-  props: ["openDialog"],
+  props: ["openDialog", "vinoSeleccionado"],
   watch: {
     openDialog(newVal) {
+      console.log(newVal);
       this.dialog = newVal;
+    },
+    vinoSeleccionado(newVal) {
+      console.log(newVal);
+      this.vino = newVal;
     }
   },
   directives: {
@@ -113,6 +120,24 @@ export default {
     addVino() {
       Meteor.call("vinos.add", this.vino);
       this.dialog.open = false;
+      this.limpiarVinos();
+    },
+    editarVino() {
+      Meteor.call("vinos.edit", this.vino);
+      this.dialog.open = false;
+      this.limpiarVinos();
+    },
+    limpiarVinos() {
+      this.vino = {
+        nombre: "",
+        precio: "",
+        cantidad: "",
+        descripcion: "",
+        comida: [],
+        imagen: "",
+        fotos:[]
+      };
+      this.$parent.limpiarVinos()
     }
   },
   computed: {
