@@ -87,6 +87,9 @@ export default {
           this.errorBusqueda = false;
         }, 4000);
       }
+    },filtrarVino(){
+      
+      
     },
     limpiarComida() {
       this.comida = undefined;
