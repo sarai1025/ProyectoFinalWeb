@@ -29,27 +29,71 @@
 
       </div>
       <v-btn to="/" text>Inicio</v-btn>
-      <v-btn to="/Pedidos" v-if="loggedUser.rol=='admin'" text>Pedidos</v-btn>
-      <v-btn to="/Tienda" v-if="loggedUser.rol!=='admin'" text>Tienda</v-btn>
-      <v-btn to="/Tienda" v-if="loggedUser.rol==='admin'" text>Modificar vinos</v-btn>
-      <v-btn to="/ListaComidas" v-if="loggedUser.rol==='admin'" text>Modificar comidas</v-btn>
-      <v-btn to="/Reportes" v-if="loggedUser.rol==='admin'" text>Reportes</v-btn>
-      <v-btn to="/login" text>Iniciar sesión</v-btn>
+      <v-btn to="/Pedidos" v-if="esAdmin==true || esDespachador==true" text>Pedidos</v-btn>
+      <v-btn to="/Tienda" v-if="esAdmin==false" text>Tienda</v-btn>
+      <v-btn to="/Tienda" v-if="esAdmin==true" text>Modificar vinos</v-btn>
+      <v-btn to="/ListaComidas" v-if="esAdmin==true" text>Modificar comidas</v-btn>
+      <v-btn to="/Reportes" v-if="esAdmin==true" text>Reportes</v-btn>
+      <v-btn @click="Login()" v-if="activo==false ">Iniciar Sesión</v-btn>
+      <v-btn @click="cerrarSesion(correo)" v-if="activo==true ">Cerrar Sesión</v-btn>
     </v-app-bar>
 </template>
 
 <script>
+import { mask } from 'vue-the-mask'
+import { mapState } from "vuex";
+import {UsuariosCollection} from "../../api/usuarios";
+
 export default {
-  computed:{
-    notifications(){
-      return null;
-    }
-  },
     data: () => ({ 
       nn: true,
-      loggedUser: { nombre: "sarai", rol: "admin" },
-  })
-  ,
+      textbtn:"Iniciar sesión",
+      usuario: '',
+      activo2: false
+  }),
+directives: {
+      mask,
+    },
+  computed: mapState({
+    esAdmin: state => state.actualUsuario.esAdmin,
+    esDespachador: state => state.actualUsuario.esDespachador,
+    activo: state => state.actualUsuario.activo,
+    correo: state => state.actualUsuario.correo,
+  }),
+
+  methods:{
+    Login(){
+      this.$router.push({path: '/login'});
+    },
+    async cerrarSesion(correo){
+      
+      console.log(correo)
+      const usuario = await new Promise((resolve, reject) =>
+      Meteor.call('usuarios.findOneCorreo', correo, (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      })
+    );
+    this.usuario= usuario;
+
+    if(this.usuario!=null){
+            
+            this.usuario.activo = false;
+            this.usuario.esAdmin = false;
+            this.usuario.esDespachador = false;
+            Meteor.call('usuarios.edit',this.usuario)
+
+            this.usuario.nombre ="",
+            this.usuario.apellido= "",
+            this.usuario.correo= "",
+            this.usuario.id= '',
+            this.usuario.celular= '',
+            this.usuario.contrasenia= "",
+            this.$store.commit("setActualUsuario", this.usuario);
+            this.$router.push({path: '/'});
+      }
+    }
+  }
 };
 
 </script>

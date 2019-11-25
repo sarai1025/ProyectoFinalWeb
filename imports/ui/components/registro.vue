@@ -50,7 +50,7 @@
                 <v-text-field
                   :append-icon="show4 ? 'visibility' : 'visibility_off'"
                   :type="show4 ? 'text' : 'password'"
-                  v-model="usuario.concontrasenia"
+                  v-model="concontrasenia"
                   name="input-10-2"
                   label="Confirmar contraseña*"
                   hint="Mínimo 8 caracteres"
@@ -92,6 +92,7 @@ export default {
     return {
       show3: false,
       show4: false,
+      concontrasenia: "",
 
       usuario:{
         nombre: "",
@@ -100,14 +101,16 @@ export default {
         id: '',
         celular: '',
         contrasenia: "",
-        concontrasenia: "",
         esDespachador: false,
+        esAdmin: false,
+        activo: false,
       }
     };
   },
   methods: {
     addUser(){
       Meteor.call('usuarios.add', this.usuario);
+      this.$router.push({path: '/login'});
     }
   }
 };

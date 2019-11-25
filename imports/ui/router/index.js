@@ -14,6 +14,7 @@ Vue.use(Router)
 
 const router=new Router({
     routes:[
+
         {path:'/', component:Inicio,},
         {path:'/login', component:Login},
         {path:'/Tienda', component:Tienda},
@@ -22,7 +23,7 @@ const router=new Router({
         {path:'/Reportes', component:Reportes},
         {path:'/ListaComidas', component:listadoComidas},
         {path:'/Pedidos', component:Pedidos},
-
+  
     ]
 })
 

@@ -12,11 +12,26 @@ export default new Vuex.Store({
             precio: "",
             cantidad: "",
             fotos: "",
+        },
+        actualUsuario: {
+            nombre: "",
+            apellido: "",
+            correo: "",
+            id: '',
+            celular: '',
+            contrasenia: "",
+            esDespachador: false,
+            admin: false,
+            activo:false
         }
     },
     mutations: {
         setActualVino(state, val) {
             state.actualVino = val
+        },
+
+        setActualUsuario(state, usuario){
+            state.actualUsuario = usuario
         },
 
     },
