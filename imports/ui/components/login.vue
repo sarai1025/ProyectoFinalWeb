@@ -5,6 +5,7 @@
   background-size: cover;"
   >
     <menuBar/>
+     
     <v-container fill-height>
       
       <v-row justify="center">
@@ -42,18 +43,40 @@
             </v-list-item>
 
             <v-card-actions>
-              <v-btn v-on:click="inicioSesion(email, password)" text>Iniciar sesión</v-btn>
+               <div class="text-center">
+              <v-dialog v-model="dialog" width="500">
+                <template v-slot:activator="{ on }">
+                  <v-btn  @click="inicioSesion()" text>Iniciar sesión</v-btn>
+                </template>
+                <v-card>
+                  <v-card-title class="headline grey lighten-2" primary-title>Error</v-card-title>
+                  <v-card-text v-text="textd">
+                  </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="dialog = false">Aceptar</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+                </div>
               <v-btn to="/Registrarse" text>Registrarse</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
+     
     </v-container>
+    
   </div>
+  
 </template>
 
 <script>
 import Menu from "../components/menu";
+import Faker from 'faker';
+import {UsuariosCollection} from "../../api/usuarios";
+
 /* eslint-disable no-unused-vars */
 export default {
   name: "login",
@@ -62,13 +85,19 @@ export default {
   },
   data: function() {
     return {
-  title: "Inicio",
+      textd: "",
+      dialog: false,
+      title: "Inicio",
       show1: false,
       show2: true,
       show3: false,
       show4: false,
       password: "",
       email: "",
+
+      //para el usuario
+      usuario: '',
+
       rules: {
         required: value => !!value || "Este campo es obligatorio."
       },
@@ -82,20 +111,50 @@ export default {
     }
   },
 
-  methods:{
-    inicioSesion(email,password){
+  meteor:{
 
-      var user  = Meteor.call('usuarios.findOne', email,password);
-      console.log(user)
-      if(user!=null){
-        var id= this.$route.params.id;
-        this.$router.push({path: '/' + id});
-      }else{
-         console.log("usuario no registrado")
+  },
+
+  methods:{
+    async inicioSesion(){
+  
+
+
+    // Con esto lo que estoy haciendo es crear un promesa que me dice que si se cumple el reject entonces que m
+    //traiga el resultado. Con esto me evito hacer varios .then 
+    const usuario = await new Promise((resolve, reject) =>
+      Meteor.call('usuarios.findOneCorreo', this.email, (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      })
+    );
+    //aqui modifico el usuario de vue para poder usarlo mas adelante
+    this.usuario= usuario;
+
+    //Aqui hago las verificaciones de login
+    if(this.usuario!=null){
+      if(this.usuario.contrasenia==this.password){
+          this.usuario.activo = true;
+          Meteor.call('usuarios.edit',this.usuario)
+          this.$store.commit("setActualUsuario", this.usuario);
+          this.$router.push({path: '/'});
+       }else{
+         this.dialog= true;
+         this.textd = "La contraseña es incorrecta";
+       }
+      }else if(this.email=="" || this.password==""){
+        this.dialog= true;
+        this.textd = "Hay algún campo vacío";
+
+      }else if(this.usuario==null){
+        this.dialog=true;
+        this.textd = "No estas registrado, Registrate";
+
       }
-     
+
     }
-  }
+  },
+
   
 };
 </script>

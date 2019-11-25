@@ -23,8 +23,8 @@
             </v-col>
             <v-col class="mt-3 pr-5 pl-11" md="3" sm="12">
               <v-btn
-                @click.stop="dialog = {open:true}"
-                v-if="loggedUser.rol==='admin'"
+                @click.stop="limpiarVinos(); dialog={open:true}"
+                v-if="esAdmin==true"
                 outlined
                 depressed
                 style="width:120px; height:25px"
@@ -55,7 +55,7 @@
                 </v-col>
 
                 <v-col :align-self="'end'" md="2" class="mr-0 pr-0 ml-0 pl-0 pt-35 mt-1">
-                  <v-row v-if="loggedUser.rol==='admin'" class="mb-0 mr-0 pr-0 ml-0 pl-0 mt-0 pt-0">
+                  <v-row v-if="esAdmin==true" class="mb-0 mr-0 pr-0 ml-0 pl-0 mt-0 pt-0">
                     <v-list-item-action class="ma-0 pa-0">
                       <v-row class="mb-0 pb-0">
                         <v-col class="mr-0 pr-0 ml-0 pl-0">
@@ -64,13 +64,14 @@
                             depressed
                             small
                             color="blue darken-4"
-                            @click.stop="dialog = {open:true}"
+                            v-if="esAdmin==true"
+                            @click.stop="vinoSeleccionado=item; dialog = {open:true, modoEditar:true}; "
                           >
                             <i class="fas fa-pencil-alt"></i>
                           </v-btn>
                         </v-col>
                         <v-col class="ml-0 pl-2 mr-0 pr-0">
-                          <v-btn outlined depressed small color="red">
+                          <v-btn outlined depressed small v-if="esAdmin==true" @click.stop="borrarVinos(item)" color="red">
                             <i class="fas fa-trash-alt"></i>
                           </v-btn>
                         </v-col>
@@ -79,7 +80,7 @@
                   </v-row>
 
                   <v-row class="mr-0 mt-0 pt-0">
-                    <v-btn to="/Detalle">Ver más...</v-btn>
+                    <v-btn  v-on:click="verDetalleVino(item)">Ver más...</v-btn>
                   </v-row>
                 </v-col>
               </v-row>
@@ -89,7 +90,7 @@
         <br />
         <v-divider></v-divider>
       </v-card>
-      <agregarEditarVinos :openDialog="dialog"></agregarEditarVinos>
+      <agregarEditarVinos :openDialog="dialog" :vinoSeleccionado="vinoSeleccionado"></agregarEditarVinos>
     </v-container>
   </div>
 </template>
@@ -99,6 +100,8 @@ import Faker from 'faker'
 import Menu from "../components/menu";
 import Modal from "../components/modalAgregarEditarVino";
 import {VinosCollection} from "../../api/vinos";
+import { mask } from 'vue-the-mask';
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -108,10 +111,17 @@ export default {
   data: function() {
     return {
       eliminado: false,
-      loggedUser: { nombre: "sarai", rol: "admin" },
       comidaSeleccionada: undefined, //TO-DO GESTIONAR CON EL STORE DE VUEX
-      dialog: { open: false },
-      
+      dialog: { open: false,},
+      vinoSeleccionado:{
+        nombre: "",
+        precio: "",
+        cantidad: "",
+        descripcion: "",
+        comida: [],
+        imagen: "",
+        fotos: []
+      },     
     };
   },
   meteor: {
@@ -122,6 +132,33 @@ export default {
       return  VinosCollection.find({});
     }
   },
+  directives: {
+      mask,
+    },
+  methods:{
+    borrarVinos(vino){
+      Meteor.call('vinos.delete', vino)
+    },
+    limpiarVinos(){
+      this.vinoSeleccionado= {
+        nombre: "",
+        precio: "",
+        cantidad: "",
+        descripcion: "",
+        comida: [],
+        imagen: "",
+        fotos:[]
+      }
+    },
+    verDetalleVino(vino) {
+      this.$store.commit("setActualVino", vino);
+      this.$router.push("/Detalle");
+    }
+  },
+  computed: mapState({
+    esAdmin: state => state.actualUsuario.esAdmin,
+  }),
+
 };
 </script>
 <style>

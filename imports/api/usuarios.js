@@ -16,11 +16,17 @@ Meteor.methods({
         })
     },
 
-    'usuarios.findOne'(EUsario, PUsuario){
-        UsuariosCollection.findOne({
-           ...EUsario,
-           ...PUsuario
-        })
+    'usuarios.findOneCorreo'(datoUsuario){
+        try{
+            return UsuariosCollection.findOne({correo: datoUsuario})
+        }catch(e){
+            console.log(e)
+        }
+       
+    },
+
+    'usuarios.edit'(usuario){
+        UsuariosCollection.update({correo: usuario.correo},{$set:{activo:usuario.activo}})
     }
 
 })

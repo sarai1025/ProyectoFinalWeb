@@ -61,7 +61,7 @@
                 depressed
                 small
                 color="blue darken-4"
-                @click.stop="borrarComida(tipo,comidita)"
+                @click.stop="dialogComida=true; selectedTipoComida= tipo; indiceComida=j; selectedComida= comidita; modoEditar=true"
               >
                 <i class="fas fa-pencil-alt"></i>
               </v-btn>
@@ -126,15 +126,19 @@
             <v-container>
               <v-row>
                 <v-col md="12">
-                  <v-text-field v-model="comidaAgregar" label="Nombre de la comida" hint></v-text-field>
+                  <v-text-field v-if="modoEditar!=true" v-model="comidaAgregar" label="Nombre de la comida" hint></v-text-field>
+                </v-col>
+                <v-col md="12">
+                  <v-text-field v-if="modoEditar===true" v-model="this.selectedComida" label="Nombre de la comida" hint></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="cancelarComida()">Cancelar</v-btn>
-            <v-btn color="blue darken-1" text @click="addComida()">Guardar</v-btn>
+            <v-btn color="blue darken-1" text @click="cancelarComida(); modoEditar=false">Cancelar</v-btn>
+            <v-btn color="blue darken-1" text v-if="modoEditar===true" @click="editarComida(this.selectedComida); modoEditar=false">Guardar</v-btn>
+            <v-btn color="blue darken-1" v-else text @click="addComida(); modoEditar=false">Guardar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -155,6 +159,8 @@ export default {
     return {
       modoEditar: false,
       selectedTipoComida: "",
+      indiceComida:"",
+      selectedComida:"",
       comidaAgregar: "",
       dialogTipo: false,
       dialogComida: false,
@@ -209,8 +215,11 @@ export default {
       this.selectedTipoComida=""
     },
     
-    editarComida(){
-
+    editarComida(nombreNuevo){
+      Meteor.call("comidas.edit",this.selectedTipoComida,nombreNuevo, this.indiceComida)
+      this.dialogComida=false
+      this.selectedTipoComida=""
+      this.indiceComida=""
     }
   }
 };

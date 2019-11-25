@@ -14,6 +14,13 @@ Meteor.methods({
             ...vino,
             date: new Date()
         })
+    },
+    'vinos.delete'(vino){
+        VinosCollection.remove({_id: vino._id})
+    },
+    'vinos.edit'(vino){
+        console.log("aqui")
+        VinosCollection.update({_id: vino._id},{$set:{nombre:vino.nombre, precio:vino.precio, cantidad:vino.cantidad, descripcion:vino.descripcion, comida:vino.comida, imagen: vino.imagen, fotos: vino.fotos}})
     }
 })
 
