@@ -9,6 +9,7 @@ if (Meteor.isServer) {
     })
 }
 Meteor.methods({
+
     'pedidos.add'(pedidos) {
         PedidosCollection.insert({
             ...pedidos,
@@ -16,4 +17,5 @@ Meteor.methods({
         })
     },
 
+   
 })

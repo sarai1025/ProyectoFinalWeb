@@ -8,7 +8,7 @@ import vinosCollection from  '../imports/api/vinos'
 import comidasCollection from  '../imports/api/comidas'
 import usuariosCollection from  '../imports/api/usuarios'
 import pedidosCollection from  '../imports/api/pedidos'
-import pCarritoCollection from  '../imports/api/pCarrito'
+import PCarritoCollection from  '../imports/api/pCarrito'
 import store from '../imports/ui/store/store.js'
 
 

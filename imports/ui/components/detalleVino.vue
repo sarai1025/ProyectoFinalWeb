@@ -74,11 +74,11 @@
           <v-container>
             <v-row>
               <v-col md="8">
-                <v-text-field v-mask="'#### - #### - #### - ####'" label="Numero de tarjeta*" required></v-text-field>
+                <v-text-field v-mask="'#### - #### - #### - ####'" label="Numero de tarjeta*" required v-model="tarjeta"></v-text-field>
               </v-col>
               <v-col md="4">
                 <v-text-field
-                  v-model="mxmUsers"
+                  v-model="pedidoCarrito.cantidadPedidos"
                   :rules="nameRules"
                   label="Cantidad"
                   required
@@ -87,7 +87,7 @@
                 ></v-text-field>
               </v-col>
               <v-col md="12">
-                <v-text-field label="Dirección de entrega*" hint=""></v-text-field>
+                <v-text-field label="Dirección de entrega*" hint="" v-model="pedidoCarrito.direccion"></v-text-field>
               </v-col>          
               
             </v-row>
@@ -97,7 +97,23 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="dialog = false">Cancelar</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">Finalizar</v-btn>
+            <div class="text-center">
+              <v-dialog v-model="dialog1" width="500">
+                <template v-slot:activator="{ on }">
+                  <v-btn color="blue darken-1" text @click="agregarAlcarrito(nombre, precio, cantidad, tarjeta,correo)">Finalizar</v-btn>
+                </template>
+                <v-card>
+                  <v-card-title class="headline grey lighten-2" primary-title>Error</v-card-title>
+                  <v-card-text v-text="textd">
+                  </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="dialog1 = false">Aceptar</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+                </div>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -108,6 +124,7 @@
 import Menu from "../components/menu";
 import { mask } from 'vue-the-mask'
 import { mapState } from "vuex";
+import {PCarritoCollection} from "../../api/pCarrito";
 
 export default {
   components: {
@@ -118,17 +135,82 @@ export default {
     },
   data: function() {
     return {
+      pedidoCarrito:{
+        cantidadPedidos:'',
+        correoU: "",
+        direccion:"",
+        vinoNombre: "",
+        precio: ''
+      },
+     
+      tarjeta:'',
+      usuario: '',
+   
       
-      dialog: false
+      dialog: false,
+      dialog1: false,
+      textd: ""
     };
   },
   computed: mapState({
+    //del vino
     nombre: state => state.actualVino.nombre,
     descripcion: state => state.actualVino.descripcion,
     precio: state => state.actualVino.precio,
     cantidad: state => state.actualVino.cantidad,
     fotos: state => state.actualVino.fotos,
+
+    //del Usuario
+    correo: state => state.actualUsuario.correo,
+
   }),
+
+  methods:{
+    async agregarAlcarrito(nombre, precio, cantidad, tarjeta, correo){
+
+      const usuario = await new Promise((resolve, reject) =>
+      Meteor.call('usuarios.findOneCorreo', correo, (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      })
+    );
+    this.usuario= usuario;
+
+      if(this.pedidoCarrito.cantidadPedidos > cantidad){
+        this.dialog1=true;
+        this.textd = "Has excedido la cantidad de vinos disponibles"
+      }else if(this.pedidoCarrito.cantidadPedidos=='0' || this.pedidoCarrito.cantidadPedidos==0 ){
+        this.dialog1=true;
+        this.textd = "La cantidad de vinos que pidió es igual a 0"
+      }else if(this.pedidoCarrito.cantidadPedidos=='' || this.tarjeta== "" || this.pedidoCarrito.direccion=="" ){
+        this.dialog1=true;
+        this.textd = "No has ingresado todos los datos"
+      }else{
+        //Agrego la tarjeta del usuario
+        this.usuario.tarjeta = tarjeta;
+        Meteor.call('usuarios.edit', this.usuario)
+        this.$store.commit("setActualUsuario", this.usuario);
+
+        //Agregar al carrito
+        this.pedidoCarrito.vinoNombre = nombre;
+        this.pedidoCarrito.precio = precio*this.pedidoCarrito.cantidadPedidos;
+        this.pedidoCarrito.correoU = correo;
+
+        Meteor.call('pCarrito.add', this.pedidoCarrito )
+        dialog = false;
+
+        this.pedidoCarrito= {
+        cantidadPedidos:'',
+        correoU: "",
+        direccion:"",
+        vinoNombre: "",
+        precio: ''
+      }
+
+      }
+
+    },
+  }
 };
 </script>
 

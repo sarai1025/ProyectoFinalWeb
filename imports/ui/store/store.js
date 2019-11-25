@@ -22,7 +22,8 @@ export default new Vuex.Store({
             contrasenia: "",
             esDespachador: false,
             admin: false,
-            activo:false
+            activo:false,
+            tarjeta: ''
         }
     },
     mutations: {

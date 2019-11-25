@@ -70,7 +70,23 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn to="/login" class="mr-5 mb-5" color="blue darken-1" text>Cancelar</v-btn>
-          <v-btn class="mr-5 mb-5" color="blue darken-1" @click="addUser()">Registrarse</v-btn>
+          <div class="text-center">
+              <v-dialog v-model="dialog" width="500">
+                <template v-slot:activator="{ on }">
+                  <v-btn class="mr-5 mb-5" color="blue darken-1" @click="addUser()">Registrarse</v-btn>
+                </template>
+                <v-card>
+                  <v-card-title class="headline grey lighten-2" primary-title>Error</v-card-title>
+                  <v-card-text v-text="textd">
+                  </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="dialog = false">Aceptar</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+                </div>
         </v-card-actions>
       </v-card>
     </v-container>
@@ -80,6 +96,7 @@
 <script>
 import Menu from "../components/menu";
 import { mask } from "vue-the-mask";
+import {UsuariosCollection} from "../../api/usuarios"
 
 export default {
   components: {
@@ -93,6 +110,10 @@ export default {
       show3: false,
       show4: false,
       concontrasenia: "",
+      usuario2:'',
+
+      dialog: false,
+      textd: "",
 
       usuario:{
         nombre: "",
@@ -104,13 +125,35 @@ export default {
         esDespachador: false,
         esAdmin: false,
         activo: false,
+        tarjeta: ''
       }
     };
   },
   methods: {
-    addUser(){
-      Meteor.call('usuarios.add', this.usuario);
-      this.$router.push({path: '/login'});
+   async addUser(){
+     
+      const usuarioe = await new Promise((resolve, reject) =>
+        Meteor.call('usuarios.findOneCorreo', this.usuario.correo, (error, result) => {
+          if (error) return reject(error);
+          resolve(result);
+        })
+      );
+
+      this.usuario2= usuarioe
+      console.log(this.usuario2)
+
+      if(this.usuario.correo=="" || this.usuario.nombre=="" || this.usuario.apellido=="" || this.usuario.id=='' 
+      || this.usuario.contrasenia=="" || this.usuario.id=="" ){
+        this.dialog= true;
+        this.textd = "no has ingresado todos los datos";
+
+      }else if(this.usuario2=== undefined){
+         Meteor.call('usuarios.add', this.usuario);
+          this.$router.push({path: '/login'});
+      }else{
+        this.dialog= true;
+        this.textd = "El usuario ya esta registrado";
+      }
     }
   }
 };
