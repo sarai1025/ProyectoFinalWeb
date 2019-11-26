@@ -18,7 +18,6 @@ Meteor.methods({
     'vinos.delete'(vino) {
         VinosCollection.remove({ _id: vino._id })
     },
-<<<<<<< HEAD
     'vinos.edit'(vino) {
         console.log("aqui")
         VinosCollection.update({ _id: vino._id }, { $set: { nombre: vino.nombre, precio: vino.precio, cantidad: vino.cantidad, descripcion: vino.descripcion, comida: vino.comida, imagen: vino.imagen, fotos: vino.fotos } })
@@ -29,8 +28,7 @@ Meteor.methods({
         } catch (e) {
             console.log(e)
         }
-    }
-=======
+    },
     'vinos.edit'(vino){
         VinosCollection.update({_id: vino._id},{$set:{nombre:vino.nombre, precio:vino.precio, cantidad:vino.cantidad, descripcion:vino.descripcion, comida:vino.comida, imagen: vino.imagen, fotos: vino.fotos}})
     },
@@ -42,6 +40,5 @@ Meteor.methods({
         }
        
     },
->>>>>>> f344d7d6ba7d35a7f9932d37ae4d60d4b75994a9
 })
 
