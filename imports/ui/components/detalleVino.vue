@@ -175,7 +175,7 @@ export default {
       })
     );
     this.usuario= usuario;
-
+    if(this.usuario != undefined){
       if(this.pedidoCarrito.cantidadPedidos > cantidad){
         this.dialog1=true;
         this.textd = "Has excedido la cantidad de vinos disponibles"
@@ -210,6 +210,10 @@ export default {
       }
 
       }
+    }else{
+      this.dialog1=true;
+      this.textd = "Debes iniciar sesión primero"
+    }
 
     },
   }
