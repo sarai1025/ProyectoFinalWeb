@@ -10,13 +10,13 @@
 
       <v-spacer></v-spacer>
 
-      <div v-if="esAdmin==false && esDespachador==false">
+      <div v-if="esDespachador==false">
        <v-menu :close-on-content-click="close" offset-y>
          <template v-slot:activator="{ on }">
             <v-btn color="primary" dark v-on="on" x-large icon>
               <v-badge color="grey ligthen-1" overlap >
                 <span slot="badge" v-text="notificaciones.length"></span>
-              <v-icon>info</v-icon>
+              <v-icon>mdi-cart</v-icon>
               </v-badge>
             </v-btn>
          </template>
@@ -36,7 +36,7 @@
                           </v-btn>
                 </v-col>
               </v-list-item>
-              <v-btn outlined depressed small v-if="notificaciones.length > 0" @click.stop=" comprarTodos()" color="blue">
+              <v-btn outlined depressed small v-if="notificaciones.length > 0" @click.stop=" comprarTodos(notificaciones)" color="blue">
                            comprar Todos
                           </v-btn>
           </v-list>
@@ -61,6 +61,7 @@ import { mapState } from "vuex";
 import {UsuariosCollection} from "../../api/usuarios";
 import {PCarritoCollection} from "../../api/pCarrito";
 import {PedidosCollection} from "../../api/pedidos";
+import { mdiCart } from '@mdi/js';
 
 export default {
     data: () => ({ 
@@ -68,6 +69,8 @@ export default {
       textbtn:"Iniciar sesión",
       usuario: '',
       activo2: false,
+
+      vinov: ''
 
   }),
 directives: {
@@ -79,6 +82,9 @@ directives: {
     esDespachador: state => state.actualUsuario.esDespachador,
     activo: state => state.actualUsuario.activo,
     correo: state => state.actualUsuario.correo,
+
+    //para vino
+    nombre: state => state.actualVino.nombre,
     
   }),
 
@@ -121,15 +127,47 @@ directives: {
     borrarPedido(pedidoCarrito){
       Meteor.call('pCarrito.delete',pedidoCarrito)
     },
-    comprar(pedido){
-      Meteor.call('pedidos.add', pedido)
-      Meteor.call('pCarrito.delete',pedido)
+    async comprar(pedido){
+      
+    Meteor.call('pedidos.add', pedido)
+
+    const vino = await new Promise((resolve, reject) =>
+      Meteor.call('vinos.findOneNombre', pedido.vinoNombre, (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      })
+    );
+
+    this.vinov = vino;
+    this.vinov.cantidad = this.vinov.cantidad - pedido.cantidadPedidos;
+  
+    this.$store.commit("setActualVino", this.vinov);
+
+    Meteor.call('vinos.edit', this.vinov)
+    Meteor.call('pCarrito.delete',pedido)
+
   },
-  comprarTodos(){
-    this.notificaciones.array.forEach(element => {
-       Meteor.call('pedidos.add', element)
-       Meteor.call('pCarrito.delete',element)
-    });
+  async comprarTodos(notificaciones){
+    for(i in notificaciones){
+
+      Meteor.call('pedidos.add', notificaciones[i])
+
+    const vino = await new Promise((resolve, reject) =>
+      Meteor.call('vinos.findOneNombre', notificaciones[i].vinoNombre, (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      })
+    );
+
+    this.vinov = vino;
+    this.vinov.cantidad = this.vinov.cantidad - notificaciones[i].cantidadPedidos;
+
+    this.$store.commit("setActualVino", this.vinov);
+
+    Meteor.call('vinos.edit', this.vinov)
+    Meteor.call('pCarrito.delete',notificaciones[i])
+
+    }
   },
   },
 

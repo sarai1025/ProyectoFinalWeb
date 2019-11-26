@@ -140,10 +140,10 @@ export default {
         correoU: "",
         direccion:"",
         vinoNombre: "",
-        precio: ''
+        precio: '',
+        pendiente: true,
       },
      
-      tarjeta:'',
       usuario: '',
    
       
@@ -162,7 +162,7 @@ export default {
 
     //del Usuario
     correo: state => state.actualUsuario.correo,
-
+    tarjeta: state => state.actualUsuario.tarjeta,
   }),
 
   methods:{
@@ -187,6 +187,7 @@ export default {
         this.textd = "No has ingresado todos los datos"
       }else{
         //Agrego la tarjeta del usuario
+        this.dialog = false;
         this.usuario.tarjeta = tarjeta;
         Meteor.call('usuarios.edit', this.usuario)
         this.$store.commit("setActualUsuario", this.usuario);
@@ -197,14 +198,15 @@ export default {
         this.pedidoCarrito.correoU = correo;
 
         Meteor.call('pCarrito.add', this.pedidoCarrito )
-        dialog = false;
+      
 
         this.pedidoCarrito= {
         cantidadPedidos:'',
         correoU: "",
         direccion:"",
         vinoNombre: "",
-        precio: ''
+        precio: '',
+        pendiente: true,
       }
 
       }

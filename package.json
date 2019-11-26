@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.2",
+    "@mdi/js": "^4.6.95",
     "faker": "^4.1.0",
     "meteor-node-stubs": "^0.4.1",
     "vue": "^2.6.10",
