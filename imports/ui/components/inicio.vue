@@ -124,20 +124,14 @@ export default {
     Salidas: arreglo con las comidas obtenidas desde la base de datos*/
 
     async getComidasEspecificas() {
-      console.log(this.tipocomida);
-      let comida1 = await new Promise((resolve, reject) =>
-        Meteor.call(
-          "tipoComidas.findOneTipoComida",
-          this.tipocomida,
-          (error, result) => {
-            if (error) return reject(error);
-            resolve(result);
-          }
-        )
-      );
-      console.log(comida1);
+      const comidas = ComidasCollection.find({}) || {};
+      let tipoComidas = comidas.map(tipocomida => {
+        return tipocomida;
+      });
+      tipoComidas = tipoComidas.flat();
 
-      return (comidasEspecificas = comida1.comidas);
+      console.log(tipoComidas);
+      return tipoComidas;
     },
 
     
