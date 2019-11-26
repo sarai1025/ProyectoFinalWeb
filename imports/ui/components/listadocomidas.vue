@@ -1,3 +1,6 @@
+/* Este componente es el encargado de gestionar, para el usuario administrador,
+ los tipos de comidas y sus respectivos platos de comidas */
+
 <template>
   <div
     style="background: url('https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1553&q=80');
@@ -179,42 +182,80 @@ export default {
     }
   },
   methods: {
+    /* Nombre del método: limpiarComida()
+    Objetivo: Vaciar los campos que se utilizan al registrar una comida
+    Entradas: Ninguna 
+    Salidas: Ninguna*/
     limpiarComida() {
       this.tipoComida.nombre = "";
       this.tipoComida.comidas = "";
     },
+     /* Nombre del método: addTipoComida()
+    Objetivo:Permite al usuario administrador registrar un tipo de comida
+    Entradas: Ninguna 
+    Salidas: Ninguna*/
     addTipoComida() {
       this.tipoComida.comidas = this.tipoComida.comidas.split(",");
       Meteor.call("tiposComidas.add", this.tipoComida);
       this.dialogTipo = false;
       this.limpiarComida();
     },
+    /* Nombre del método: addComida()
+    Objetivo:Permite al usuario administrador registrar un plato de comida
+    con su respectivo tipo de comida
+    Entradas: Ninguna 
+    Salidas: Ninguna*/
     addComida() {
       Meteor.call("comidas.add", this.selectedTipoComida, this.comidaAgregar);
       this.dialogComida = false;
       (this.selectedTipoComida = ""), (this.comidaAgregar = "");
     },
+    /* Nombre del método: cancelar()
+    Objetivo:Permite al usuario administrador cancelar la acción de agregar
+    un nuevo tipo de comida (es decir, un nuevo grupo de comida)
+    Entradas: Ninguna 
+    Salidas: Ninguna*/
     cancelar() {
       this.limpiarComida(), (this.dialogTipo = false);
     },
+    /* Nombre del método: cancelarComida()
+    Objetivo:Permite al usuario administrador cancelar la acción de agregar
+    un nuevo plato de comida
+    Entradas: Ninguna 
+    Salidas: Ninguna*/
     cancelarComida() {
       this.selectedTipoComida = "";
       this.comidaAgregar = "";
       this.dialogComida = false;
     },
+      /* Nombre del método: borrarTipoComida()
+    Objetivo:Permite al usuario administrador borrar un grupo de comida registrado
+    Entradas: el objeto tipoComida a borrar 
+    Salidas: Ninguna*/
     borrarTipoComida(tipoComida) {
       Meteor.call("tiposComidas.delete", tipoComida);
     },
+    /* Nombre del método: borrarComida()
+    Objetivo:Permite al usuario administrador borrar un plato de comida registrado
+    Entradas: el objeto tipoComida a borrar y el plato de comida a borrar
+    Salidas: Ninguna*/
     borrarComida(tipoComida, comida) {
       console.log(comida);
       Meteor.call("comidas.delete", tipoComida, comida);
     },
+    /* Nombre del método: editarTipoComida()
+    Objetivo:Permite al usuario administrador editar un tipo o grupo de comida registrado
+    Entradas: el nombre nuevo para el grupo de comidas
+    Salidas: Ninguna*/
     editarTipoComida(nombreNuevo){
       Meteor.call("tipoComidas.edit", this.selectedTipoComida, nombreNuevo)
       this.dialogTipo=false
       this.selectedTipoComida=""
     },
-    
+    /* Nombre del método: editarComida()
+    Objetivo:Permite al usuario administrador editar un plato de comida registrado
+    Entradas: el nombre nuevo para el plato de comida
+    Salidas: Ninguna*/
     editarComida(nombreNuevo){
       Meteor.call("comidas.edit",this.selectedTipoComida,nombreNuevo, this.indiceComida)
       this.dialogComida=false

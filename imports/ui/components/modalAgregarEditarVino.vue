@@ -1,3 +1,5 @@
+/* Este componente es con el propósito de agregar o editar el elemento vino. Es el Dialog que aparece para realizar esas funciones
+mencionadas. */
 <template>
   <v-dialog v-model="dialog.open" persistent max-width="600px">
     <v-card>
@@ -99,6 +101,10 @@ export default {
     $subscribe: {
       tipoComidas: []
     },
+    /* Nombre del método:allComidas
+    Objetivo: Buscar todas las comidas existentes en la base de datos
+    Entradas: Ninguna
+    Salidas: arreglo de todas las comidas encontradas en la base de datos */
     allComidas() {
       const comidas =  ComidasCollection.find({}) || {};
       let tipoComidas =  comidas.map(tipocomida => {return tipocomida.comidas;});
@@ -120,6 +126,12 @@ export default {
     mask
   },
   methods: {
+     /* Nombre del método: buscar()
+    Objetivo: notificar si el usuario oprime el botón llamado buscar sin
+    haber seleccionado los platos de comida
+    
+    Entradas: Ninguna
+    Salidas: mensaje del error encontrado */
     buscar() {
       if (!this.tipocomida || !this.comida) {
         this.errorBusqueda = true;
@@ -128,19 +140,40 @@ export default {
         }, 4000);
       }
     },
+     /* Nombre del método: limparComida()
+    Objetivo: Vaciar los campos que se usan para la comida
+    
+    Entradas: Ninguna
+    Salidas: Ninguna */
     limpiarComida() {
       this.comida = undefined;
     },
+     /* Nombre del método: addVino()
+    Objetivo: agregar los vinos que el usuario administrador quiera agregar
+    
+    Entradas: Ninguna
+    Salidas: Ninguna */
+    
     addVino() {
       Meteor.call("vinos.add", this.vino);
       this.dialog.open = false;
       this.limpiarVinos();
     },
+    /* Nombre del método: editarVino()
+    Objetivo:permite acutalizar la información registrada por el
+    
+    Entradas: Ninguna
+    Salidas: Ninguna */
     editarVino() {
       Meteor.call("vinos.edit", this.vino);
       this.dialog.open = false;
       this.limpiarVinos();
     },
+     /* Nombre del método: limpiarVinos()
+    Objetivo:vacia los campos utilizados para el registro del vino
+    
+    Entradas: Ninguna
+    Salidas: Ninguna */
     limpiarVinos() {
       this.vino = {
         nombre: "",

@@ -1,26 +1,38 @@
+
+/* Este componente es el inicio de la página web, su propósito principal es enseñarle al usuario el concepto de maridaje 
+y qué tipos y platos de comidas maneja el sitio web.
+ */
+
 <template>
-  <div class="ma-0 pa-0"
+  <div
+    class="ma-0 pa-0"
     style="background-image: url('https://images.unsplash.com/photo-1505935428862-770b6f24f629?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1494&q=80'); widht:100%; height: 100%;  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;"
   >
     <v-container>
+      <!-- Se agrega el componente del menú que se evidencia en la parte superior
+      del sitio web (algunos de los componentes que contiene: inicio de sesión, tienda de vinos, inicio,etc)-->
       <v-row class="pb-4">
         <v-col>
           <menuBar />
         </v-col>
       </v-row>
+
+      <!-- Se activa una notificación de advertencia, en caso de querer realizar una busqueda sin seleccionar los platos de comida -->
       <v-alert type="warning" v-if="errorBusqueda === true">Debe seleccionar una comida.</v-alert>
+      <!-- Se agregan las listas de tipos de comida y los platos de comida -->
       <v-row justify="center">
         <v-col md="5">
           <v-autocomplete
             dense
             filled
             background-color="white"
-            v-model="tipocomida"
             @change="limpiarComida"
             label="Seleccione un tipo de comida"
-            :items="tiposcomidas"
+            :items="getTipoComidas"
+            v-model="tipocomida"
+            value="tipocomida"
           ></v-autocomplete>
         </v-col>
         <v-col md="5">
@@ -28,9 +40,9 @@
             background-color="white"
             dense
             filled
-            v-model="comida"
             label="Seleccione una comida"
-            :items="comidaSeleccionada"
+            :items="comidasEspecificas"
+            v-model="comida"
             :disabled="habilitarComida"
           ></v-autocomplete>
         </v-col>
@@ -41,6 +53,7 @@
         </v-col>
       </v-row>
 
+      <!-- Se agrega el concepto de maridaje para contribuir con el aprendizaje del usuario -->
       <v-row align="center" justify="center">
         <div style="background-color:white; border-radius:100px">
           <v-img src="images/vino.png" max-width="200" max-height="200"></v-img>
@@ -62,24 +75,83 @@
 </template>
 
 <script>
+import { VinosCollection } from "../../api/vinos";
+import { ComidasCollection } from "../../api/comidas";
+import Faker from "faker";
 import Menu from "../components/menu";
+import { mapState } from "vuex";
+
 export default {
   components: {
     menuBar: Menu
   },
   data() {
     return {
-      tiposcomidas: ["Autocompletes", "Comboboxes", "Forms"],
-      comidas: {
-        Autocompletes: ["Autocompletes", "Comboboxes", "Forms"],
-        Comboboxes: ["Sopa", "Pasta"]
-      },
-      tipocomida: undefined,
+      
+
+      tipocomida: "",
       comida: undefined,
       errorBusqueda: false
     };
   },
+  meteor: {
+   
+    $subscribe: {
+      tipoComidas: [],
+      comidasEspecificas: [],
+      
+    },
+   
+       /* Nombre del método: getTipoComidas()
+    Objetivo: Obtener la lista de los tipos de comidas de la base de datos y mostrarla 
+    en el template
+    Entradas: Ninguna
+    Salidas: arreglo con los tipos comidas obtenidas desde la base de datos*/
+    getTipoComidas() {
+      const comidas = ComidasCollection.find({}) || {};
+      let tipoComidas = comidas.map(tipocomida => {
+        return tipocomida.nombre;
+      });
+      tipoComidas = tipoComidas.flat();
+
+      console.log(tipoComidas);
+      return tipoComidas;
+    },
+     /* Nombre del método: getComidasEspecificas()
+    Objetivo: Obtener la lista de comidas de la base de datos y mostrarla 
+    en el template
+    Entradas: Ninguna
+    Salidas: arreglo con las comidas obtenidas desde la base de datos*/
+
+    async getComidasEspecificas() {
+      console.log(this.tipocomida);
+      let comida1 = await new Promise((resolve, reject) =>
+        Meteor.call(
+          "tipoComidas.findOneTipoComida",
+          this.tipocomida,
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        )
+      );
+      console.log(comida1);
+
+      return (comidasEspecificas = comida1.comidas);
+    },
+
+    
+   
+  },
+  created() {
+    
+  },
   methods: {
+    /* Nombre del método: buscar()
+    Objetivo: notificar si el usuario oprime el botón llamado buscar sin
+    haber seleccionado los platos de comida
+    Entradas: Ninguna
+    Salidas: mensaje del error encontrado*/
     buscar() {
       if (!this.tipocomida || !this.comida) {
         this.errorBusqueda = true;
@@ -87,10 +159,9 @@ export default {
           this.errorBusqueda = false;
         }, 4000);
       }
-    },filtrarVino(){
-      
-      
     },
+   
+
     limpiarComida() {
       this.comida = undefined;
     }

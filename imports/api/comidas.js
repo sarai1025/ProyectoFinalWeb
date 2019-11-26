@@ -29,6 +29,20 @@ Meteor.methods({
     },
     'comidas.edit'(tipoComida, comida, indice) {
         return ComidasCollection.update({ _id: tipoComida._id }, { $set: { [`comidas.${indice}`]: comida } })
-    }
+    },
+    /* 'comidas.findOneComida'(datoComida) {
+        try {
+            return comidasCollection.findOne({ comida: datoComida })
+        } catch (e) {
+            console.log(e)
+        }
+    },*/
+    'tipoComidas.findOneTipoComida'(datoTipoComida) {
+        try {
+            return comidasCollection.findOne({ nombre: datoTipoComida })
+        } catch (e) {
+            console.log(e)
+        }
+    } 
 })
 

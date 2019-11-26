@@ -23,7 +23,12 @@ export default new Vuex.Store({
             esDespachador: false,
             admin: false,
             activo:false
+        },filtroComidas:{
+            comidas:[],
+            tipoComidas:[]
+
         }
+        
     },
     mutations: {
         setActualVino(state, val) {

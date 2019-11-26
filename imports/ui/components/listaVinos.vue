@@ -1,3 +1,4 @@
+/* Este componente se tiene con el objetivo de administrar las funcionalidades para el vino */
 <template>
   <div
     style="background-image: url(''); widht:100%; height: 100%;  background-position: center;
@@ -128,6 +129,11 @@ export default {
     $subscribe: {
       'vinos': []
     },
+     /* Nombre del método: vinos()
+    Objetivo:permite buscar los vinos en la colección de vinos de la base de datos
+    
+    Entradas: Ninguna
+    Salidas: retorna la colección de vinos encontrada de la base de datos */
     vinos() {
       return  VinosCollection.find({});
     }
@@ -136,9 +142,19 @@ export default {
       mask,
     },
   methods:{
+     /* Nombre del método: borrarVinos(vino)
+    Objetivo:Permite al administrador eliminar un vino registrado
+    
+    Entradas: Objeto vino a eliminar
+    Salidas: Ninguna */
     borrarVinos(vino){
       Meteor.call('vinos.delete', vino)
     },
+       /* Nombre del método: limpiarVinos()
+    Objetivo:vacia los campos utilizados para el vino seleccionado
+    
+    Entradas: Ninguna
+    Salidas: Ninguna */
     limpiarVinos(){
       this.vinoSeleccionado= {
         nombre: "",
@@ -153,7 +169,31 @@ export default {
     verDetalleVino(vino) {
       this.$store.commit("setActualVino", vino);
       this.$router.push("/Detalle");
-    }
+    },
+    async filtrarVino() {
+      // Con esto lo que estoy haciendo es crear un promesa que me dice que si se cumple el reject entonces que m
+      //traiga el resultado. Con esto me evito hacer varios .then
+      this.comidaSeleccionada=$store.state.filtroComidas.comidas;
+       const vino = await new Promise((resolve, reject) =>
+        Meteor.call("vinos.findOneVino", this.comidaSeleccionada, (error, result) => {
+          if (error) return reject(error);
+          resolve(result);
+        })
+      ); 
+      //aqui modifico el usuario de vue para poder usarlo mas adelante
+      /* this.vino = vino; */
+
+      //Aqui hago las verificaciones de login
+       /* if (this.vino != null) {
+         
+        if (this.vino.comida == this.comida) {
+
+        
+          
+         
+        } 
+      }  */
+    },
   },
   computed: mapState({
     esAdmin: state => state.actualUsuario.esAdmin,
