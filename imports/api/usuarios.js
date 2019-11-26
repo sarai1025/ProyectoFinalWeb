@@ -26,7 +26,7 @@ Meteor.methods({
     },
 
     'usuarios.edit'(usuario){
-        UsuariosCollection.update({correo: usuario.correo},{$set:{activo:usuario.activo}})
+        UsuariosCollection.update({correo: usuario.correo},{$set:{activo:usuario.activo, tarjeta:usuario.tarjeta}})
     }
 
 })

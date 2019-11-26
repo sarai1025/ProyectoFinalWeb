@@ -97,6 +97,7 @@ export default {
 
       //para el usuario
       usuario: '',
+      //para el carrito
 
       rules: {
         required: value => !!value || "Este campo es obligatorio."
@@ -117,9 +118,6 @@ export default {
 
   methods:{
     async inicioSesion(){
-  
-
-
     // Con esto lo que estoy haciendo es crear un promesa que me dice que si se cumple el reject entonces que m
     //traiga el resultado. Con esto me evito hacer varios .then 
     const usuario = await new Promise((resolve, reject) =>

@@ -1,19 +1,28 @@
 import { Mongo } from 'meteor/mongo'
 import { Meteor } from 'meteor/meteor'
 
-export const pCarritoCollection = new Mongo.Collection('pedidosCarrito')
+export const PCarritoCollection = new Mongo.Collection('pCarrito')
 
 if (Meteor.isServer) {
-    Meteor.publish('pedidosCarrito', function () {
-        return pCarritoCollection.find({});
+    Meteor.publish('notificaciones', function () {
+        return PCarritoCollection.find({});
     })
 }
 Meteor.methods({
-    'pedidosCarrito.add'(pCarrito) {
-        pCarritoCollection.insert({
-            ...pCarrito,
+    'pCarrito.add'(pedido) {
+        PCarritoCollection.insert({
+            ...pedido,
             date: new Date()
         })
     },
+
+    'pCarrito.deleteAll'(){
+        PCarritoCollection.remove({})
+    },
+
+    'pCarrito.delete'(pedido){
+        PCarritoCollection.remove({_id: pedido._id})
+    },
+
 
 })

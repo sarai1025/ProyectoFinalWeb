@@ -25,8 +25,10 @@ export default new Vuex.Store({
             activo:false
         },filtroComidas:{
             comidas:[],
-            tipoComidas:[]
+            tipoComidas:[],
 
+            activo:false,
+            tarjeta: ''
         }
         
     },

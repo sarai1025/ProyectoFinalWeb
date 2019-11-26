@@ -93,7 +93,7 @@ export default {
         descripcion: "",
         comida: [],
         imagen: "",
-        fotos: []
+        fotos: [],
       }
     };
   },
