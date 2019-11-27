@@ -32,7 +32,7 @@ y qué tipos y platos de comidas maneja el sitio web.
             label="Seleccione una comida"
             :items="comidasEspecificas"
             v-model="comida"
-            :disabled="habilitarComida"
+            :disabled="true"
           ></v-autocomplete>
         </v-col>
         <v-col md="2">
