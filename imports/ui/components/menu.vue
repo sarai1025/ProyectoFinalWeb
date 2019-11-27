@@ -48,7 +48,7 @@
       <v-btn to="/Tienda" v-if="esAdmin==false" text>Tienda</v-btn>
       <v-btn to="/Tienda" v-if="esAdmin==true" text>Modificar vinos</v-btn>
       <v-btn to="/ListaComidas" v-if="esAdmin==true" text>Modificar comidas</v-btn>
-      <v-btn to="/Reportes" v-if="esAdmin==true" text>Reportes</v-btn>
+     
       <v-btn @click="Login()" v-if="activo==false ">Iniciar Sesión</v-btn>
       <v-btn @click="cerrarSesion(correo)" v-if="activo==true ">Cerrar Sesión</v-btn>
     </v-app-bar>

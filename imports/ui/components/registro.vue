@@ -123,7 +123,7 @@ export default {
         celular: '',
         contrasenia: "",
         esDespachador: false,
-        esAdmin: true,
+        esAdmin: false,
         activo: false,
         tarjeta: ''
       }
