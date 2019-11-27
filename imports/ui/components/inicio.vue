@@ -23,19 +23,8 @@ y qué tipos y platos de comidas maneja el sitio web.
       <v-alert type="warning" v-if="errorBusqueda === true">Debe seleccionar una comida.</v-alert>
       <!-- Se agregan las listas de tipos de comida y los platos de comida -->
       <v-row justify="center">
-        <v-col md="5">
-          <v-autocomplete
-            dense
-            filled
-            background-color="white"
-            @change="limpiarComida"
-            label="Seleccione un tipo de comida"
-            :items="getTipoComidas"
-            v-model="tipocomida"
-            value="tipocomida"
-          ></v-autocomplete>
-        </v-col>
-        <v-col md="5">
+        
+        <v-col md="10">
           <v-autocomplete
             background-color="white"
             dense
