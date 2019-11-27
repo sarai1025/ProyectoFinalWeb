@@ -179,10 +179,10 @@ export default {
       if(this.pedidoCarrito.cantidadPedidos > cantidad){
         this.dialog1=true;
         this.textd = "Has excedido la cantidad de vinos disponibles"
-      }else if(this.pedidoCarrito.cantidadPedidos=='0' || this.pedidoCarrito.cantidadPedidos==0 ){
+      }else if(this.pedidoCarrito.cantidadPedidos==='0' || this.pedidoCarrito.cantidadPedidos===0 ){
         this.dialog1=true;
         this.textd = "La cantidad de vinos que pidió es igual a 0"
-      }else if(this.pedidoCarrito.cantidadPedidos=='' || this.tarjeta== "" || this.pedidoCarrito.direccion=="" ){
+      }else if(this.pedidoCarrito.cantidadPedidos==="" || this.tarjeta==="" || this.pedidoCarrito.direccion==="" ){
         this.dialog1=true;
         this.textd = "No has ingresado todos los datos"
       }else{
