@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/runtime": "^7.7.2",
     "@mdi/js": "^4.6.95",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "faker": "^4.1.0",
     "meteor-node-stubs": "^0.4.1",
     "passport-facebook": "^3.0.0",
